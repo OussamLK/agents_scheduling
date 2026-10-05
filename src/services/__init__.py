@@ -10,10 +10,10 @@ class AgentService:
         return self.db.get_qualified_available_agents(shift_id)
 
     def book_agent(self, agent: Agent, shift: Shift) -> Assignment:
-        unavailable = self.db.agent_has_all_qualifications(
-            agent, shift) and self.db.agent_available(agent, shift)
+        unavailable = not (self.db.agent_has_all_qualifications(
+            agent, shift) and self.db.agent_available(agent, shift))
         overbooking = self.db.is_fully_booked(shift)
-        if not (unavailable or overbooking):
+        if (unavailable or overbooking):
             reason = 'overbooking' if overbooking else 'agent unassignable'
             raise AssignmentError(
                 f'impossible to book agent to shift {shift.id}: {reason}')
