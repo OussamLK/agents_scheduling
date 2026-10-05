@@ -8,11 +8,6 @@ from src.types import AgentQualification, QualificationCode
 app = FastAPI()
 
 
-@app.get('/agents')
-def get_agents(db: DBDeps):
-    return db.get_qualified_agents([])
-
-
 @app.get('/api/shifts/{shift_id}/available-agents')
 def get_available_agents(
         shift_id: str,
@@ -21,4 +16,4 @@ def get_available_agents(
     if shift is None:
         raise HTTPException(
             status_code=404, detail=f"Shift '{shift_id}' not found")
-    return db.get_qualified_agents(shift.required_qualifications)
+    return db.get_qualified_available_agents(shift_id)
