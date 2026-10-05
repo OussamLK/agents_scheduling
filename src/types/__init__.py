@@ -2,6 +2,8 @@ import datetime
 from typing import Literal
 from pydantic import BaseModel
 
+type QualificationCode = str
+
 
 class AgentQualification(BaseModel):
     code: str
@@ -19,7 +21,7 @@ class Shift(BaseModel):
     site: str
     start: datetime.datetime
     end: datetime.datetime
-    required_qualifications: list[AgentQualification]
+    required_qualifications: list[QualificationCode]
     headcount: int
 
 
