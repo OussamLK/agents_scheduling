@@ -1,6 +1,10 @@
-def main():
-    print("Hello from garda-interview!")
+from fastapi import FastAPI
+
+from src.persistence import DBDeps
+
+app = FastAPI()
 
 
-if __name__ == "__main__":
-    main()
+@app.get('/agents')
+def get_agents(db: DBDeps):
+    return db.getQualifiedAgents([])
