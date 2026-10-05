@@ -30,6 +30,7 @@ class DB(ABC):
         self, agent: Agent, shift: Shift) -> bool: ...
 
     def agent_available(self, agent: Agent, shift: Shift) -> bool: ...
+    def is_fully_booked(self, shift: Shift) -> bool: ...
 
 
 @dataclass
@@ -60,6 +61,10 @@ class JsonDB(DB):
         if not (self.agent_has_all_qualifications(agent, shift) and self.agent_available(agent, shift)):
             raise Exception(f'impossible to book agent to shift {shift.id}')
         return self._assign_agent(agent, shift)
+
+    def is_fully_booked(self, shift: Shift) -> bool:
+        return shift.headcount <= len(
+            [a for a in self.assignments if a.shift_id == shift.id])
 
     def _assign_agent(self, agent: Agent, shift: Shift) -> Assignment:
         ...

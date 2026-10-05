@@ -1,5 +1,7 @@
 # How to run
 
+clone the repo:
+put the DB json data in `src/persistence/data.json`
 run `uv run fastapi dev`
 
 ## stage 1

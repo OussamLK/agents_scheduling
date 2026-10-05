@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException, Query
 
 from src.dtos import AgentDto
 from src.persistence import DBDeps
+from src.persistence.db import serialize_assignment
 from src.services import AgentService, AssignmentError
 from src.types import AgentQualification, QualificationCode
 
@@ -36,6 +37,6 @@ def create_assignment(shift_id: str, agent: AgentDto, db: DBDeps):
         assignment = agent_service.book_agent(db_agent, shift)
     except AssignmentError:
         raise HTTPException(
-            status_code=404, detail=f"Can not book '{agent.agentId}' on shift {shift.id}")
+            status_code=422, detail=f"Can not book '{agent.agentId}' on shift {shift.id}")
     # write error will just crash this and return 500
-    return assignment
+    return serialize_assignment(assignment)
